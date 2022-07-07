@@ -10,7 +10,7 @@ function Home() {
             <Row>
                 {products.map((item) => {
                     return (
-                        <Col sm={12} md={6} lg={4}>
+                        <Col key={item._id} sm={12} md={6} lg={4}>
                             <Product product={item} />
                         </Col>
                     )
