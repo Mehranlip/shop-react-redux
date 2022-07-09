@@ -1,63 +1,68 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import { Row, Col, Image, ListGroup, Button } from "react-bootstrap"
-import axios from 'axios'
 
 
 
-function Product({ match }) {
-    const [product, setProduct] = useState({})
+import { productDetailAction } from "../action/productAction"
+
+
+
+const Product = ({ match }) => {
+    const dispatch = useDispatch()
+
+    const productDetail = useSelector((state) => state.productDetail)
+    const { loading, product } = productDetail
 
     useEffect(() => {
-        const sendRequest = async () => {
-            const response = await axios.get(`http://localhost:8000/api/products/${match.params.id}`)
-
-            setProduct(response.data)
-
-
-        }
-
-        sendRequest()
-    }, [match])
+        dispatch(productDetailAction(match.params.id))
+    }, [dispatch, match])
 
     return (
         <div>
             <Link to="/" className='btn btn-light my-3'>
                 بازگشت به صفحه اصلی
             </Link>
-            <Row>
-                <Col md={6}>
-                    <Image src={product.image} fliud />
-                </Col>
-                <Col md={3}>
-                    <ListGroup variant='flush'>
-                        <ListGroup.Item>
-                            <h3>
-                                {product.name}
-                            </h3>
-                        </ListGroup.Item>
-                        <ListGroup.Item>
 
-                            {product.price}
+            {loading ? (
+                <h2>در حال دریافت محصول  ...</h2>
+            ) : (
+                <Row>
+                    <Col md={6}>
+                        <Image src={product.image} fliud />
+                    </Col>
+                    <Col md={3}>
+                        <ListGroup variant='flush'>
+                            <ListGroup.Item>
+                                <h3>
+                                    {product.name}
+                                </h3>
+                            </ListGroup.Item>
+                            <ListGroup.Item>
 
-                        </ListGroup.Item>
-                        <ListGroup.Item>
+                                {product.price}
 
-                            {product.description}
+                            </ListGroup.Item>
+                            <ListGroup.Item>
 
-                        </ListGroup.Item>
-                    </ListGroup>
-                </Col>
-                <Col md={3}>
-                    <ListGroup variant='flush'>
-                        <ListGroup.Item>
-                            <Button className='btn-block' type='button'>
-                                افزودن به سبد خرید
-                            </Button>
-                        </ListGroup.Item>
-                    </ListGroup>
-                </Col>
-            </Row>
+                                {product.description}
+
+                            </ListGroup.Item>
+                        </ListGroup>
+                    </Col>
+                    <Col md={3}>
+                        <ListGroup variant='flush'>
+                            <ListGroup.Item>
+                                <Button className='btn-block' type='button'>
+                                    افزودن به سبد خرید
+                                </Button>
+                            </ListGroup.Item>
+                        </ListGroup>
+                    </Col>
+                </Row>
+            )}
+
         </div>
     )
 }
