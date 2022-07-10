@@ -9,7 +9,7 @@ import { productDetailAction } from "../action/productAction"
 
 
 
-const Product = ({ match }) => {
+const Product = ({ match, history }) => {
     const dispatch = useDispatch()
 
     const productDetail = useSelector((state) => state.productDetail)
@@ -18,7 +18,9 @@ const Product = ({ match }) => {
     useEffect(() => {
         dispatch(productDetailAction(match.params.id))
     }, [dispatch, match])
-
+    const addToCartHandler = () => {
+        history.push(`/cart/${match.params.id}`)
+    }
     return (
         <div>
             <Link to="/" className='btn btn-light my-3'>
@@ -54,7 +56,9 @@ const Product = ({ match }) => {
                     <Col md={3}>
                         <ListGroup variant='flush'>
                             <ListGroup.Item>
-                                <Button className='btn-block' type='button'>
+                                <Button
+                                    onClick={addToCartHandler}
+                                    className='btn-block' type='button'>
                                     افزودن به سبد خرید
                                 </Button>
                             </ListGroup.Item>
