@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
-import { Row, Col, Image, ListGroup, Button } from "react-bootstrap"
+import { Row, Col, Image, ListGroup, Button, Spinner } from "react-bootstrap"
 
 
 
@@ -28,7 +28,9 @@ const Product = ({ match, history }) => {
             </Link>
 
             {loading ? (
-                <h2>در حال دریافت محصول  ...</h2>
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
             ) : (
                 <Row>
                     <Col md={6}>
